@@ -16,7 +16,23 @@ $_config['db']['1']['tablepre'] = 'pre_';
 $_config['db']['slave'] = '';
 $_config['db']['common']['slave_except_table'] = '';
 
-$_config['portal']['pic']['url'] = 'http://127.0.0.1:8080/discuz/data/attachment/'; 
+
+
+// ----------------------------  COMMENT  ----------------------------- //
+$_config['portal']['pic']['url'] = 'http://127.0.0.1:8080/discuz/data/attachment/';
 
 $_config['site']['url'] = 'http://127.0.0.1:8080/discuz/';
+$_config['comment']['pageSize'] = 30;//分页条数
+
+
+
+// ----------------------------  PORTAL  ----------------------------- //
+$_config['portal']['search']['where'] = " where tag <> 16 "; //discuz的门户文章展示条件
+$_config['portal']['search']['order'] = " order by dateline desc "; //discuz的门户文章排序方式
+
+// ----------------------------  FORUM  ----------------------------- //
+$_config['forum']['search']['order'] = " order by dateline desc "; //discuz论坛排序方式
+
+
+
 

@@ -18,11 +18,20 @@ if(!get_magic_quotes_gpc()){
 }
 
 if($action == 'index'){//获得门户相应列表
+	$page = isset($_POST["page"])?$_POST["page"]:1;
+	$pageSize = isset($_POST["pageSize"])?$_POST["pageSize"]:$_config['comment']['pageSize'];
+	$arr = $portaldb->getAllPortal($page, $pageSize);
+}else if($action == "content"){//查找文章内容
+	if(isset($_POST["aid"])){
+		$aid =  intval($_POST["aid"]); //获得文章id
+		$arr = $portaldb ->getPortalContent($aid);
+	}
+}else if($action == "loadMore"){//加载更多数据
+	$page = isset($_POST["page"])?$_POST["page"]:1;
+	$pageSize = isset($_POST["pageSize"])?$_POST["pageSize"]:$_config['comment']['pageSize'];
 	
-	$arr = $portaldb->getAllPortal();
-}else if($action = "content"){//查找文章内容
-	$aid =  intval($_POST["aid"]); //获得文章id 
-	$arr = $portaldb ->getPortalContent($aid);
+	$pageSize = isset($_POST["pageSize"])?$_POST["pageSize"]:$_config['comment']['pageSize'];
+	$arr = $portaldb->getLoadMorePortal($page, $pageSize);
 }
 
 echo json_encode($arr);

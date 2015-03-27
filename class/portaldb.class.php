@@ -16,12 +16,18 @@ class PortalDB extends DB{
 	
 	/**
 	 * 获得所有门户的数据
-	 * 
+	 * $page 第几页
+	 * $pageSize 一页内显示条数
 	 * 作者:王震
 	 */
-	public function getAllPortal(){
+	public function getAllPortal($page, $pageSize ){
+		$page = intval($page);
+		$pageSize = intval($pageSize);
+		$start=($page-1)*$pageSize;
 		$arr = array("addata"=>array(), "count"=>0, "data"=>array());
-		$sql = "select * from " . $this->config['db']['1']['tablepre'] . "portal_article_title where tag <> 16 order by dateline desc";
+		$sql = "select * from " . $this->config['db']['1']['tablepre'] . "portal_article_title " .  $this->config['portal']['search']['where'] 
+		. $this->config['portal']['search']['order'] . " limit {$start}, {$pageSize} " ;
+		
 		
 		$result = $this->mysqli->query($sql);
 		while ($row = $result->fetch_assoc()) {
@@ -68,8 +74,34 @@ class PortalDB extends DB{
 		return $arr;
 	}
 	
-	
-	
+	/**
+	 * 加载更多的门户文章
+	 * @param int $page
+	 * @param int $pageSize
+	 * 作者:王震
+	 */
+	function getLoadMorePortal($page, $pageSize){
+		$page = intval($page);
+		$pageSize = intval($pageSize);
+		$start=($page-1)*$pageSize;
+		$arr = array("addata"=>array(), "count"=>0, "data"=>array());
+		$sql = "select * from " . $this->config['db']['1']['tablepre'] . "portal_article_title " .  $this->config['portal']['search']['where']
+		. $this->config['portal']['search']['order'] . " limit {$start}, {$pageSize} " ;
+		
+		
+		$result = $this->mysqli->query($sql);
+		while ($row = $result->fetch_assoc()) {
+			if(!empty($row["pic"])){
+				$row["pic"] = $this->config['portal']['pic']['url']  . $row["pic"];
+			}
+			$arr["data"][] = $row;
+		}
+		$arr["count"] = count($arr["data"]);
+		
+		$result->close();
+		
+		return $arr;
+	}
 	
 	
 	 

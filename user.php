@@ -15,12 +15,13 @@ if($action == "adduser"){
 	$username = Tools::my_addslashes("username", $method);
 	$password = Tools::my_addslashes("password", $method);
 	$email = Tools::my_addslashes("email", $method);
-	$user = new User($username, $password);
-	$user->email = $email;
 	$userdb = new UserDB();
 	$is_exit_username =$userdb->check_usernameexists($username);
 	$is_exit_email = $userdb->check_emailexists($email);
 	if(empty($is_exit_username) && empty($is_exit_email)){
+		$user = new User($username, $password);
+		$user->email = $email;
+		
 		$uid = $userdb->add_user($user);
 		$arr = array("uid"=>$uid, "username"=>$username);
 		echo json_encode($arr);
